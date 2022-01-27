@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+#gamego {
+  background-color: #f0f0f0;
+  width: min-content;
+  height: min-content;
+  margin: 15px;
+}
+#gamego #board {
+  display: grid;
+  grid-template-rows: repeat(19, 1fr);
+  border: 3px solid black;
+  border-radius: 2px;
+  width: 380px;
+  height: 380px;
+}
+#gamego #board .rows {
+  display: grid;
+  grid-template-columns: repeat(19, 1fr);
+  border-bottom: 1px solid black;
+}
+#gamego #board .rows:last-child {
+  border-bottom: 0;
+}
+#gamego #board .rows .cols {
+  display: inline;
+  border-right: 1px solid black;
+}
+#gamego #board .rows .cols:last-child {
+  border-right: 0;
+}
+
+/*# sourceMappingURL=style.css.map */
