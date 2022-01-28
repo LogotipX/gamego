@@ -1,5 +1,5 @@
 <template>
-  <div @click="step(colNumber, rowNumber, steppedPlayer)" class="cols">
+  <div @click="step(rowNumber, colNumber, steppedPlayer)" class="cols">
     {{ steppedPlayer }}
   </div>
 </template>
@@ -15,8 +15,8 @@ export default {
   },
 
   props: {
-    colNumber: Number,
     rowNumber: Number,
+    colNumber: Number,
   },
 
   emits: {
@@ -37,21 +37,21 @@ export default {
   },
 
   methods: {
-    step(colNumber, rowNumber) {
+    step(rowNumber, colNumber) {
       if (this.stepped) return;
 
       this.stepped = true;
 
-      this.$store.state.currentPlayer
-        ? (this.steppedPlayer = "O")
-        : (this.steppedPlayer = "X");
-      // console.log(`${rowNumber}:${colNumber}`);
-
-      this.$store.commit("changePlayer");
       this.$store.commit("addStepCoords", {
         currentRow: rowNumber,
         currentCol: colNumber,
       });
+      this.$store.commit("changePlayer");
+
+      this.$store.state.boardCoords[rowNumber][colNumber]
+        ? (this.steppedPlayer = "O")
+        : (this.steppedPlayer = "X");
+      // console.log(`${rowNumber}:${colNumber}`);
 
       this.$emit("currentCoords", [rowNumber, colNumber]);
 

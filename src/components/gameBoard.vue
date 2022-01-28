@@ -6,8 +6,8 @@
         v-for="col in cols"
         :key="col"
         ref="cols"
-        :colNumber="col - 1"
         :rowNumber="row - 1"
+        :colNumber="col - 1"
         @currentCoords="checkAroundSquares"
       />
     </div>
@@ -40,14 +40,16 @@ export default {
         const row = square[0];
         const col = square[1];
 
-        const enemy = this.currentPlayer === "X" ? false : true;
+        const enemy = this.currentPlayer === "X" ? true : false;
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
           // console.log(
           //   `This func gonna check around squares. If enemySquare => mb he can become friend?`
           // );
           console.log(`EnemySquare => mb he can become friend?`);
-          this.enemyLineLengthCoords(currentCoords, [row, col]);
+
+          const enemyCoords = [row, col];
+          this.enemyLineLengthCoords(currentCoords, enemyCoords);
           // this.checkAroundSquares([row, col]);
         }
       });
@@ -86,6 +88,11 @@ export default {
             this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]],
             this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]]
           );
+          this.$store.commit("changeEnemySquare", {
+            changedCoords: enemyLineCoords,
+            player:
+              this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]],
+          });
           return;
         }
         enemyLineCoords.push(nextEnemyPos);
