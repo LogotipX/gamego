@@ -1,7 +1,7 @@
 <template>
   <div id="gamego">
     Current player: {{ currentPlayer }}
-    <game-board />
+    <game-board :currentPlayer="currentPlayer" />
   </div>
 </template>
 
@@ -43,8 +43,8 @@ export default {
 
 <style lang="scss">
 $squareSize: 45;
-$rows: 3;
-$cols: 3;
+$rows: 8;
+$cols: 8;
 $board-width: #{$rows * $squareSize}px;
 $board-height: #{$cols * $squareSize}px;
 $winnerColor: #221e1a;

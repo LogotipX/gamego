@@ -2,12 +2,12 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    rows: 3,
-    cols: 3,
+    rows: 8,
+    cols: 8,
     currentPlayer: false,
-    boardCoords: Array(3)
+    boardCoords: Array(8)
       .fill(null)
-      .map(() => Array(3).fill(null)),
+      .map(() => Array(8).fill(null)),
   },
   mutations: {
     changePlayer(state) {

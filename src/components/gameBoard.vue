@@ -1,4 +1,5 @@
 <template>
+  enemy: {{ this.currentPlayer === "X" ? "O" : "X" }}
   <div id="board">
     <div v-for="row in rows" :key="row" ref="rows" class="rows">
       <board-square
@@ -26,6 +27,10 @@ export default {
     };
   },
 
+  props: {
+    currentPlayer: String,
+  },
+
   methods: {
     checkAroundSquares(currentCoords) {
       const aroundCoords =
@@ -35,16 +40,63 @@ export default {
         const row = square[0];
         const col = square[1];
 
-        const enemy = this.currentPlayer === "X" ? true : false;
+        const enemy = this.currentPlayer === "X" ? false : true;
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
           // console.log(
           //   `This func gonna check around squares. If enemySquare => mb he can become friend?`
           // );
           console.log(`EnemySquare => mb he can become friend?`);
+          this.enemyLineLengthCoords(currentCoords, [row, col]);
           // this.checkAroundSquares([row, col]);
         }
       });
+    },
+
+    enemyLineLengthCoords(startSelfPos, startEnemyPos) {
+      // console.log("selfPos:", startSelfPos);
+      // console.log("enemyPos:", startEnemyPos);
+      const differenceCoords = [
+        startEnemyPos[0] - startSelfPos[0],
+        startEnemyPos[1] - startSelfPos[1],
+      ];
+      // console.log("differenceCoords", differenceCoords);
+
+      let nextEnemyPos = [
+        startEnemyPos[0] + differenceCoords[0],
+        startEnemyPos[1] + differenceCoords[1],
+      ];
+
+      // console.log("nextEnemyPos", nextEnemyPos);
+      let enemyLineCoords = [startEnemyPos];
+      while (
+        nextEnemyPos[0] >= 0 &&
+        nextEnemyPos[1] >= 0 &&
+        nextEnemyPos[0] < this.rows &&
+        nextEnemyPos[1] < this.cols &&
+        this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] !== null
+      ) {
+        if (
+          this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] ===
+          this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]]
+        ) {
+          console.log(
+            "friend finded on",
+            [...nextEnemyPos],
+            this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]],
+            this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]]
+          );
+          return;
+        }
+        enemyLineCoords.push(nextEnemyPos);
+        nextEnemyPos[0] += differenceCoords[0];
+        nextEnemyPos[1] += differenceCoords[1];
+      }
+      if (
+        this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] !== null
+      )
+        console.log("enemyPos out of limit");
+      else console.log("Null square", ...nextEnemyPos);
     },
 
     getAllAroundSquares(coords) {
