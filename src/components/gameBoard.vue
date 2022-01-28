@@ -92,7 +92,9 @@ export default {
         nextEnemyPos[0] += differenceCoords[0];
         nextEnemyPos[1] += differenceCoords[1];
       }
+
       if (
+        this.$store.state.boardCoords[nextEnemyPos[0]] === undefined ||
         this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] !== null
       )
         console.log("enemyPos out of limit");
