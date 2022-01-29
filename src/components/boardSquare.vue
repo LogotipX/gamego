@@ -1,6 +1,7 @@
 <template>
   <div @click="step(rowNumber, colNumber, steppedPlayer)" class="cols">
-    {{ player }}
+    <!-- {{ player }} -->
+    <div :class="player" class="goStone"></div>
   </div>
 </template>
 
@@ -32,9 +33,11 @@ export default {
     player() {
       if (this.steppedPlayer === null) return "";
       if (this.steppedPlayer) {
-        return "O";
+        // return "O";
+        return "--white";
       } else {
-        return "X";
+        return "--black";
+        // return "X";
       }
     },
   },
@@ -65,6 +68,25 @@ export default {
 
   &:last-child {
     border-right: 0;
+  }
+
+  .goStone {
+    display: block;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .--white {
+    background-color: #fff;
+    border: 3px double #000;
+  }
+  .--black {
+    background-color: #000;
+    border: 3px double #fff;
   }
 }
 </style>
