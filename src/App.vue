@@ -1,7 +1,9 @@
 <template>
   <div id="gamego">
-    <span v-if="winner">Winner: {{ winner }}</span>
-    <span v-if="!winner">Current player: {{ currentPlayer }}</span>
+    <span v-if="winner">Winner: {{ winner ? "White" : "Black" }}</span>
+    <span v-if="!winner"
+      >Current player: {{ currentPlayer ? "White" : "Black" }}</span
+    >
     <game-board :currentPlayer="currentPlayer" @winner="printWinner" />
   </div>
 </template>
@@ -24,11 +26,7 @@ export default {
 
   computed: {
     currentPlayer() {
-      if (this.$store.state.currentPlayer) {
-        return "O";
-      } else {
-        return "X";
-      }
+      return this.$store.state.currentPlayer;
     },
 
     previousPlayer() {

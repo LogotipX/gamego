@@ -82,11 +82,11 @@ export default {
   }
   .--white {
     background-color: #fff;
-    border: 3px double #000;
+    border: 3px inset #000;
   }
   .--black {
     background-color: #000;
-    border: 3px double #fff;
+    border: 3px inset #fff;
   }
 }
 </style>

@@ -27,7 +27,7 @@ export default {
   },
 
   props: {
-    currentPlayer: String,
+    currentPlayer: Boolean,
   },
 
   emits: {
@@ -45,13 +45,27 @@ export default {
       });
       return winner ? "X" : "O";
     },
+
+    isFillBoard() {
+      // if (this.maxSteps > 0) return false;
+      // return true;
+
+      let board = this.$store.state.boardCoords; // It's faster...
+      let isFindNull;
+      board.forEach((arr) => {
+        if (isFindNull) return;
+        isFindNull = arr.find((i) => i === null);
+        if (isFindNull === null) isFindNull = true;
+      });
+      return !isFindNull;
+    },
   },
 
   methods: {
     stepOnSquare(coords) {
       this.checkAroundSquares(coords);
 
-      if (this.isFillBoard()) {
+      if (this.isFillBoard) {
         this.$emit("winner", this.winner);
       }
     },
@@ -64,7 +78,7 @@ export default {
         const row = square[0];
         const col = square[1];
 
-        const enemy = this.currentPlayer === "X" ? true : false;
+        const enemy = this.currentPlayer ? true : false;
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
           const enemyCoords = [row, col];
@@ -161,17 +175,6 @@ export default {
         allAroundSquares: allAroundSquares,
         currentSquare: coords,
       };
-    },
-
-    isFillBoard() {
-      let board = this.$store.state.boardCoords;
-      let isFindNull;
-      board.forEach((arr) => {
-        if (isFindNull) return;
-        isFindNull = arr.find((i) => i === null);
-        if (isFindNull === null) isFindNull = true;
-      });
-      return !isFindNull;
     },
   },
 };
