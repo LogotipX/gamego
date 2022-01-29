@@ -50,8 +50,8 @@ export default {
 
 <style lang="scss">
 $squareSize: 45;
-$rows: 8;
-$cols: 8;
+$rows: 19;
+$cols: 19;
 $board-width: #{$rows * $squareSize}px;
 $board-height: #{$cols * $squareSize}px;
 $winnerColor: #221e1a;

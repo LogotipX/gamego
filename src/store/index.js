@@ -2,12 +2,12 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    rows: 8,
-    cols: 8,
+    rows: 19,
+    cols: 19,
     currentPlayer: false,
-    boardCoords: Array(8)
+    boardCoords: Array(19)
       .fill(null)
-      .map(() => Array(8).fill(null)),
+      .map(() => Array(19).fill(null)),
   },
   mutations: {
     addStepCoords(state, { currentRow, currentCol }) {
