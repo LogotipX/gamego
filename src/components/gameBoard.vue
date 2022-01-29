@@ -1,14 +1,14 @@
 <template>
-  enemy: {{ this.currentPlayer === "X" ? "O" : "X" }}
+  <!-- enemy: {{ this.currentPlayer === "X" ? "O" : "X" }} -->
   <div id="board">
-    <div v-for="row in rows" :key="row" ref="rows" class="rows">
+    <div v-for="row in rows" :key="row" class="rows">
       <board-square
         v-for="col in cols"
         :key="col"
-        ref="cols"
+        :steppedPlayer="$store.state.boardCoords[row - 1][col - 1]"
         :rowNumber="row - 1"
         :colNumber="col - 1"
-        @currentCoords="checkAroundSquares"
+        @currentCoords="stepOnSquare"
       />
     </div>
   </div>
@@ -31,7 +31,32 @@ export default {
     currentPlayer: String,
   },
 
+  emits: {
+    winner: Boolean,
+  },
+
+  computed: {
+    winner() {
+      let board = this.$store.state.boardCoords;
+      let squares = [];
+      board.forEach((arr) => (squares = [...squares, ...arr]));
+      let winner = 0;
+      squares.forEach((i) => {
+        i ? (winner += 1) : (winner -= 1);
+      });
+      return winner ? "X" : "O";
+    },
+  },
+
   methods: {
+    stepOnSquare(coords) {
+      this.checkAroundSquares(coords);
+
+      if (this.isFillBoard()) {
+        this.$emit("winner", this.winner);
+      }
+    },
+
     checkAroundSquares(currentCoords) {
       const aroundCoords =
         this.getAllAroundSquares(currentCoords)["allAroundSquares"];
@@ -64,13 +89,13 @@ export default {
       ];
       // console.log("differenceCoords", differenceCoords);
 
+      // console.log("nextEnemyPos", nextEnemyPos);
+      let enemyLineCoords = [startEnemyPos];
+
       let nextEnemyPos = [
         startEnemyPos[0] + differenceCoords[0],
         startEnemyPos[1] + differenceCoords[1],
       ];
-
-      // console.log("nextEnemyPos", nextEnemyPos);
-      let enemyLineCoords = [startEnemyPos];
       while (
         nextEnemyPos[0] >= 0 &&
         nextEnemyPos[1] >= 0 &&
@@ -95,9 +120,21 @@ export default {
           });
           return;
         }
-        enemyLineCoords.push(nextEnemyPos);
+
+        /* BUGFIX */
         nextEnemyPos[0] += differenceCoords[0];
         nextEnemyPos[1] += differenceCoords[1];
+
+        enemyLineCoords.push([
+          nextEnemyPos[0] - differenceCoords[0],
+          nextEnemyPos[1] - differenceCoords[1],
+        ]);
+
+        /* I DON'T KNOW WHY IT'S BROKEN */
+        // enemyLineCoords.push(nextEnemyPos);
+        // debugger; // eslint-disable-line no-debugger
+        // nextEnemyPos[0] += differenceCoords[0];
+        // nextEnemyPos[1] += differenceCoords[1];
       }
 
       if (
@@ -150,6 +187,17 @@ export default {
         allAroundSquares: allAroundSquares,
         currentSquare: coords,
       };
+    },
+
+    isFillBoard() {
+      let board = this.$store.state.boardCoords;
+      let isFindNull;
+      board.forEach((arr) => {
+        if (isFindNull) return;
+        isFindNull = arr.find((i) => i === null);
+        if (isFindNull === null) isFindNull = true;
+      });
+      return !isFindNull;
     },
   },
 };

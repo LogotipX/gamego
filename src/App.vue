@@ -1,7 +1,8 @@
 <template>
   <div id="gamego">
-    Current player: {{ currentPlayer }}
-    <game-board :currentPlayer="currentPlayer" />
+    <span v-if="winner">Winner: {{ winner }}</span>
+    <span v-if="!winner">Current player: {{ currentPlayer }}</span>
+    <game-board :currentPlayer="currentPlayer" @winner="printWinner" />
   </div>
 </template>
 
@@ -16,7 +17,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      winner: null,
+    };
   },
 
   computed: {
@@ -37,7 +40,11 @@ export default {
     },
   },
 
-  methods: {},
+  methods: {
+    printWinner(winner) {
+      this.winner = winner;
+    },
+  },
 };
 </script>
 
