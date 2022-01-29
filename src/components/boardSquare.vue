@@ -50,11 +50,6 @@ export default {
       });
       this.$store.commit("changePlayer");
 
-      // this.$store.state.boardCoords[rowNumber][colNumber]
-      //   ? (this.steppedPlayer = "O")
-      //   : (this.steppedPlayer = "X");
-      // // console.log(`${rowNumber}:${colNumber}`);
-
       this.$emit("currentCoords", [rowNumber, colNumber]);
     },
   },

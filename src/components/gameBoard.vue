@@ -1,5 +1,4 @@
 <template>
-  <!-- enemy: {{ this.currentPlayer === "X" ? "O" : "X" }} -->
   <div id="board">
     <div v-for="row in rows" :key="row" class="rows">
       <board-square
@@ -68,28 +67,18 @@ export default {
         const enemy = this.currentPlayer === "X" ? true : false;
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
-          // console.log(
-          //   `This func gonna check around squares. If enemySquare => mb he can become friend?`
-          // );
-          console.log(`EnemySquare => mb he can become friend?`);
-
           const enemyCoords = [row, col];
           this.enemyLineLengthCoords(currentCoords, enemyCoords);
-          // this.checkAroundSquares([row, col]);
         }
       });
     },
 
     enemyLineLengthCoords(startSelfPos, startEnemyPos) {
-      // console.log("selfPos:", startSelfPos);
-      // console.log("enemyPos:", startEnemyPos);
       const differenceCoords = [
         startEnemyPos[0] - startSelfPos[0],
         startEnemyPos[1] - startSelfPos[1],
       ];
-      // console.log("differenceCoords", differenceCoords);
 
-      // console.log("nextEnemyPos", nextEnemyPos);
       let enemyLineCoords = [startEnemyPos];
 
       let nextEnemyPos = [
@@ -107,12 +96,6 @@ export default {
           this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] ===
           this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]]
         ) {
-          console.log(
-            "friend finded on",
-            [...nextEnemyPos],
-            this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]],
-            this.$store.state.boardCoords[startSelfPos[0]][startSelfPos[1]]
-          );
           this.$store.commit("changeEnemySquare", {
             changedCoords: enemyLineCoords,
             player:
@@ -136,13 +119,6 @@ export default {
         // nextEnemyPos[0] += differenceCoords[0];
         // nextEnemyPos[1] += differenceCoords[1];
       }
-
-      if (
-        this.$store.state.boardCoords[nextEnemyPos[0]] === undefined ||
-        this.$store.state.boardCoords[nextEnemyPos[0]][nextEnemyPos[1]] !== null
-      )
-        console.log("enemyPos out of limit");
-      else console.log("Null square", ...nextEnemyPos);
     },
 
     getAllAroundSquares(coords) {
@@ -180,8 +156,6 @@ export default {
         }
         return false;
       });
-
-      // console.log(allAroundSquares);
 
       return {
         allAroundSquares: allAroundSquares,
