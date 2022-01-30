@@ -1,21 +1,37 @@
 <template>
   <div id="gamego">
-    <span v-if="winner">Winner: {{ winner ? "White" : "Black" }}</span>
-    <span v-if="!winner"
+    <!-- <span v-if="winner">Winner: {{ winner ? "White" : "Black" }}</span> -->
+    <!-- <span v-if="!winner"
       >Current player: {{ currentPlayer ? "White" : "Black" }}</span
-    >
+    > -->
+    <span v-if="winner !== null">
+      Winner:
+      <go-stone
+        :player="winner ? '--white' : '--black'"
+        style="display: inline-block; vertical-align: middle"
+      />
+    </span>
+    <span v-if="winner === null">
+      Current player:
+      <go-stone
+        :player="currentPlayer ? '--white' : '--black'"
+        style="display: inline-block; vertical-align: middle"
+      />
+    </span>
     <game-board :currentPlayer="currentPlayer" @winner="printWinner" />
   </div>
 </template>
 
 <script>
 import gameBoard from "@/components/gameBoard.vue";
+import goStone from "@/components/goStone.vue";
 
 export default {
   name: "App",
 
   components: {
     gameBoard,
+    goStone,
   },
 
   data() {

@@ -31,7 +31,7 @@ export default {
   },
 
   emits: {
-    winner: Boolean,
+    winner: [Boolean, Number], // I DON'T KNOW. Valid error withou 'Number'
   },
 
   computed: {
@@ -43,7 +43,7 @@ export default {
       squares.forEach((i) => {
         i ? (winner += 1) : (winner -= 1);
       });
-      return winner ? "X" : "O";
+      return winner > 0 ? true : false;
     },
 
     isFillBoard() {
@@ -66,7 +66,7 @@ export default {
       this.checkAroundSquares(coords);
 
       if (this.isFillBoard) {
-        this.$emit("winner", this.winner);
+        this.$emit("winner", Boolean(this.winner));
       }
     },
 
@@ -82,7 +82,6 @@ export default {
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
           const enemyCoords = [row, col];
-          console.log("asd");
           this.enemyLineLengthCoords(currentCoords, enemyCoords);
         }
       });
