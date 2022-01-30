@@ -78,10 +78,11 @@ export default {
         const row = square[0];
         const col = square[1];
 
-        const enemy = this.currentPlayer ? true : false;
+        const enemy = !this.currentPlayer;
 
         if (this.$store.state.boardCoords[row][col] === enemy) {
           const enemyCoords = [row, col];
+          console.log("asd");
           this.enemyLineLengthCoords(currentCoords, enemyCoords);
         }
       });
